@@ -1,0 +1,93 @@
+from news.models import *
+
+# Создать двух пользователей (с помощью метода User.objects.create_user('username')).
+alex = User.objects.create_user('Alex')
+vova = User.objects.create_user('Vova')
+# alex = User.objects.all()[0]
+# vova = User.objects.all()[1]
+
+# Создать два объекта модели Author, связанные с пользователями.
+auth_alex = Author.objects.create(user=alex)
+auth_vova = Author.objects.create(user=vova)
+
+# Добавить 4 категории в модель Category.
+cat1 = Category.objects.create(name='politics')
+cat2 = Category.objects.create(name='sport')
+cat3 = Category.objects.create(name='science')
+cat4 = Category.objects.create(name='economics')
+
+# Добавить 3 статьи и 1 новость.
+post1 = Post.objects.create(author=auth_alex, type='POST', title="Fernando Alonso restored to third place at Saudi Arabian GP and hits out at 'poor show' from FIA", text="""Fernando Alonso has been confirmed in third place at the Saudi Arabian Grand Prix after Aston Martin successfully appealed his post-race 10-second penalty. The Spaniard was initially punished when stewards decided a rear jack was illegally in contact with his car when he was serving an earlier penalty for a grid box infringement. After Aston Martin appealed, it was agreed that touching the car while serving a penalty did not break rules on "working" on the car.""")
+post2 = Post.objects.create(author=auth_alex, type='POST', title="James Webb space telescope captures rare image of dying star", text="The James Webb space telescope has captured the rare and fleeting phase of a star on the cusp of death. The observation was among the first made by the telescope following its launch in late 2021, but the picture was not released until this week. Webb’s infrared eyes observed all the gas and dust flung into space by a huge, hot star 15,000 light years away. A light year is about 5.8tn miles.")
+post3 = Post.objects.create(author=auth_vova, type='NEWS', title="The World Bank In China", text="Since China began to open up and reform its economy in 1978, GDP growth has averaged over 9 percent a year, and more than 800 million people have lifted themselves out of poverty. There have also been significant improvements in access to health, education, and other services over the same period. China is now an upper-middle-income country.  It will be important going forward that poverty alleviation efforts increasingly shift to addressing the vulnerabilities faced by the large number of people still considered poor by the standards of middle-income countries, including those living in urban areas.")
+post4 = Post.objects.create(author=auth_vova, type='POST', title="Xi and Putin meet in Moscow as Ukraine war rages", text="""Chinese President Xi Jinping met his "dear friend" Vladimir Putin in Moscow on Monday, seeking both to deepen economic ties with an ally he sees as a useful counterweight to the West and to promote Beijing's role as a potential peacemaker in Ukraine. Xi was the first leader to meet the Russian president since the International Criminal Court (ICC) issued an arrest warrant for him on Friday over the deportation of Ukrainian children to Russia during its year-old invasion of Ukraine.""")
+post5 = Post.objects.create(author=auth_vova, type='POST', title="Fuck you in asshole", text="""When I fuck you in asshole, I cum very fast.""")
+
+# Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
+PostCategory.objects.create(post=post1, category=cat2)
+PostCategory.objects.create(post=post2, category=cat3)
+PostCategory.objects.create(post=post3, category=cat1)
+PostCategory.objects.create(post=post3, category=cat4)
+PostCategory.objects.create(post=post4, category=cat1)
+PostCategory.objects.create(post=post5, category=cat1)
+
+# Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как минимум один комментарий).
+comm1 = Comment.objects.create(post=post1, user=alex, text='That is great! I wait for it for a long time!')
+comm2 = Comment.objects.create(post=post2, user=alex, text="It'd be interesting to see its photos.")
+comm3 = Comment.objects.create(post=post3, user=vova, text='China really is the biggest economy in the world!')
+comm4 = Comment.objects.create(post=post4, user=alex, text='Hope they decide to help us more.')
+comm5 = Comment.objects.create(post=post5, user=alex, text='I like to sex in asshole')
+
+# Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+comm2.like()
+comm2.like()
+comm1.like()
+comm4.dislike()
+comm3.like()
+comm3.like()
+comm3.like()
+comm3.like()
+comm3.like()
+comm3.dislike()
+comm5.like()
+comm5.like()
+comm5.like()
+# 1(+1),2(+2),3(+4),4(-1),5(+3)
+
+post2.like()
+post2.like()
+post1.like()
+post4.dislike()
+post3.like()
+post3.like()
+post3.like()
+post3.like()
+post3.like()
+post3.dislike()
+post5.like()
+post5.like()
+post5.like()
+# 1(+1),2(+2),3(+4),4(-1),5(+3)
+
+# Обновить рейтинги пользователей.
+auth_alex.update_rating()  # +2*3 / +2 / + 3
+auth_vova.update_rating()  #
+
+# Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
+Author.objects.all().order_by('-rating')[0].user
+Author.objects.all().order_by('-rating')[0].rating
+
+# Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
+Post.objects.all().order_by('-rating').values('date_time', 'author', 'rating', 'title')[0]
+Post.objects.all().order_by('-rating')[0].date_time.date()
+Post.objects.all().order_by('-rating')[0].author.user.username
+Post.objects.all().order_by('-rating')[0].rating
+Post.objects.all().order_by('-rating')[0].title
+Post.objects.all().order_by('-rating')[0].preview()
+
+# Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+Comment.objects.filter(post=Post.objects.all().order_by('-rating')[0]).values('date_time', 'user', 'rating', 'text')
+Comment.objects.get(post=Post.objects.all().order_by('-rating')[0]).date_time.date()
+Comment.objects.get(post=Post.objects.all().order_by('-rating')[0]).user.username
+Comment.objects.get(post=Post.objects.all().order_by('-rating')[0]).rating
+Comment.objects.get(post=Post.objects.all().order_by('-rating')[0]).text

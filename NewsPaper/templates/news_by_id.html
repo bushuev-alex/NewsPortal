@@ -1,0 +1,20 @@
+<!--  наследуемся от шаблона news.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+
+
+<!-- Название у нас будет products -->
+{% block title %}
+Post
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все новости -->
+{% block content %}
+
+<h1>{{ news.title|censor }}</h1>
+<br>
+<h1>{{ news.text|censor }}</h1>
+<br>
+<h1>{{ news.date_time|date:'d.M.Y' }}</h1>
+{% endblock content %}
