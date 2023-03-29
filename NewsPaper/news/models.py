@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rating = models.IntegerField(null=True, unique=True)
+    rating = models.IntegerField(null=True)
 
     def update_rating(self):
         # суммарный рейтинг каждой статьи автора
@@ -18,18 +18,12 @@ class Author(models.Model):
         # суммарный рейтинг всех комментариев к статьям автора.
         posts = Post.objects.filter(author=self, type='POST')
         sets_of_comments = (Comment.objects.filter(post=post) for post in posts)
-        # comments_to_author_rating = sum((sum((comment.rating for comment in set_)) for set_ in sets_of_comments))
-        # print(comments_to_author_rating)
+
         comments_to_author_rating = 0
         for set_ in sets_of_comments:
             for comment in set_:
                 comments_to_author_rating += comment.rating
-        print(comments_to_author_rating)
-        # comments_ = [[comment.rating for comment in comment] for set_ in sets_of_comments]
-        # comments_to_author_rating = sum([comment.rating for comment in comment])
-        # comments_to_author_rating = sum((post.rating for post in posts if post.author.user == self.user))
 
-        # print(articles_rating, comments_by_author_rating, comments_to_author_rating)
         self.rating = articles_rating * 3 + comments_by_author_rating + comments_to_author_rating
         self.save()
 
