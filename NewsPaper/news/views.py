@@ -7,9 +7,10 @@ from datetime import datetime
 # Create your views here.
 class PostList(ListView):
     model = Post  # Указываем модель, объекты которой мы будем выводить
-    ordering = 'date_time'  # Поле, которое будет использоваться для сортировки объектов
+    ordering = '-date_time'  # Поле, которое будет использоваться для сортировки объектов
     template_name = 'news.html'  # Указываем имя шаблона, в котором будут все инструкции о том, # как именно пользователю должны быть показаны наши объекты
     context_object_name = 'news'  # Это имя списка, в котором будут лежать все объекты. # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
+    pagination = 10
 
     def get_context_data(self, **kwargs):
         # С помощью super() мы обращаемся к родительским классам
