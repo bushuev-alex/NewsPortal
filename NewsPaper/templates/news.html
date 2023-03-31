@@ -11,11 +11,20 @@ Post
    <h1>All News for now at {% current_time %}</h1>
    {{ next_news|default_if_none:"Next news will be soon!" }}
    <hr>
+    {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
+   <form action="" method="get">
+       {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
+       {{ filterset.form.as_p }}
+       {# Добавим кнопку отправки данных формы #}
+       <input type="submit" value="Найти" />
+   </form>
+    <hr>
    {% if news %}
        <table> <!-- Начинаем описывать таблицу -->
            <tr> <!-- Добавляем строку -->
                <!-- Добавляем ещё одну ячейку в строку и так далее -->
                <!--<td>category</td>-->
+               <td>AUTHOR</td>
                <td>TITLE</td>
                <td>DATE</td>
                <td>TEXT</td>
@@ -34,6 +43,7 @@ Post
                 полям объекта модели. Например, здесь мы выводим имя,
                 в следующем столбце описание, и т.д.  -->
                <!--<td>{{ s_news.category.name }}</td>-->
+               <td>{{ one_news.author.user }}</td>
                <td>{{ one_news.title|censor }}</td>
                <td>{{ one_news.date_time|date:'d M Y' }}</td>
                <td>{{ one_news.text|censor|truncatewords:20 }}</td>
