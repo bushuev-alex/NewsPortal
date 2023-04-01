@@ -28,18 +28,6 @@ def censor(sentence: str):
     return sentence
 
 
-# if __name__ == '__main__':
-#     import re
-#
-#     bad_words = ['chlen', 'huy', 'blyad', 'pizda']
-#     sent = 'my huy is big and her pizda is wet'
-#     words = ['my', 'huy', 'is', 'big', 'and', 'her', 'pizda', 'is', 'wet']
-#
-#     print(set(words).intersection(bad_words))
-#     bad_exist = set(words).intersection(bad_words)
-#     for word in bad_exist:
-#         print(sent)
-#         sent = re.sub(word, word[0] + '*', sent)
-#         print(sent)
-#
-#     # print(re.sub('huy', 'h*', sent))
+if __name__ == '__main__':
+    import re
+
