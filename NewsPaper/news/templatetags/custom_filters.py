@@ -6,8 +6,6 @@ bad_words += [word.capitalize() for word in bad_words]
 register = template.Library()
 
 
-# Регистрируем наш фильтр под именем currency, чтоб Django понимал,
-# что это именно фильтр для шаблонов, а не простая функция.
 @register.filter()
 def currency(value):
     """
@@ -30,4 +28,5 @@ def censor(sentence: str):
 
 if __name__ == '__main__':
     import re
-
+    sent = re.sub(f"my ({'|'.join(bad_words)})", "good_news", "This is bad_news.")
+    print(sent)

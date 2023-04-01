@@ -11,10 +11,11 @@ Post
 
 <!-- В контенте на странице мы выводим все новости -->
 {% block content %}
-
-<h1>{{ news.title|censor }}</h1>
-<br>
-<h1>{{ news.text|censor }}</h1>
-<br>
 <h1>{{ news.date_time|date:'d.M.Y' }}</h1>
+<hr>
+<h1>{{ news.title|censor }}</h1>
+<hr>
+<h1>{{ news.text|censor }}</h1>
+<hr>
+
 {% endblock content %}
