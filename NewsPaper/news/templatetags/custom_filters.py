@@ -23,8 +23,8 @@ def censor(sentence: str):
     words = sentence_.split(' ')
     bad_exist = set(words).intersection(bad_words)
     for bad_word in bad_exist:
-        replace = bad_word[0] + '*' * (len(bad_word) - 1)
-        sentence = re.sub(bad_word, replace, sentence)
+        replace_by = bad_word[0] + '*' * (len(bad_word) - 1)
+        sentence = re.sub(bad_word, replace_by, sentence)
     return sentence
 
 

@@ -11,14 +11,22 @@ Post
    <h1>All News for now at {% current_time %}</h1>
    {{ next_news|default_if_none:"Next news will be soon!" }}
    <hr>
+    {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
+   <form action="" method="get">
+       {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
+       {{ filterset.form.as_p }}
+       {# Добавим кнопку отправки данных формы #}
+       <input type="submit" value="Найти" />
+   </form>
+    <hr>
    {% if news %}
        <table> <!-- Начинаем описывать таблицу -->
            <tr> <!-- Добавляем строку -->
                <!-- Добавляем ещё одну ячейку в строку и так далее -->
                <!--<td>category</td>-->
                <td>AUTHOR</td>
-               <td>DATE</td>
                <td>TITLE</td>
+               <td>DATE</td>
                <td>TEXT</td>
                <td>CATEGORY</td>
                <td>RATING</td>
@@ -36,9 +44,9 @@ Post
                 в следующем столбце описание, и т.д.  -->
                <!--<td>{{ s_news.category.name }}</td>-->
                <td>{{ one_news.author.user }}</td>
-               <td>{{ one_news.date_time|date:'d M Y' }}</td>
                <td>{{ one_news.title|censor }}</td>
-               <td>{{ one_news.text|censor|truncatechars:20 }}</td>
+               <td>{{ one_news.date_time|date:'d M Y' }}</td>
+               <td>{{ one_news.text|censor|truncatewords:20 }}</td>
                <td>{% for category in one_news.category.all %}
                    {{ category.name }}
                    {% endfor %}
@@ -56,10 +64,10 @@ Post
     <hr>
    {# Информация о предыдущих страницах #}
    {% if page_obj.has_previous %}
-       <a href="?page=1">1</a>
+       <a href="?{% url_replace page=1 %}">1</a>
        {% if page_obj.previous_page_number != 1 %}
            ...
-           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
        {% endif %}
    {% endif %}
 
@@ -68,10 +76,10 @@ Post
 
    {# Информация о следующих страницах #}
    {% if page_obj.has_next %}
-       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
        {% if paginator.num_pages != page_obj.next_page_number %}
            ...
-           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
 

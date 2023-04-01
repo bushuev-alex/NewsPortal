@@ -1,4 +1,5 @@
-from django_filters import FilterSet
+from django_filters import FilterSet, NumberFilter, CharFilter, DateTimeFilter
+from django_filters.widgets import RangeWidget
 from .models import Post
 
 
@@ -6,16 +7,15 @@ from .models import Post
 # FilterSet, который мы наследуем,
 # должен чем-то напомнить знакомые вам Django дженерики.
 class PostFilter(FilterSet):
+
+    date_time__lt = DateTimeFilter(field_name='date_time', lookup_expr='lt')
+
     class Meta:
-        # В Meta классе мы должны указать Django модель,
-        # в которой будем фильтровать записи.
         model = Post
-        # В fields мы описываем по каким полям модели
-        # будет производиться фильтрация.
         fields = {
-            # 'author': ['icontains'],
+            'author': ['exact'],
             'title': ['icontains'],
-            'category': ['icontains'],
-            'rating': ['lt', 'gt'],
-            'date_time': ['lt', 'gt']
+            # 'category': ['icontains'],
+            'rating': ['lt', 'gt']
+            # 'date_time'
         }
