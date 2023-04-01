@@ -38,7 +38,7 @@ Post
                <td>{{ one_news.author.user }}</td>
                <td>{{ one_news.date_time|date:'d M Y' }}</td>
                <td>{{ one_news.title|censor }}</td>
-               <td>{{ one_news.text|censor|truncatechars:20 }}</td>
+               <td>{{ one_news.text|censor|truncatechars:21 }}</td>
                <td>{% for category in one_news.category.all %}
                    {{ category.name }}
                    {% endfor %}
