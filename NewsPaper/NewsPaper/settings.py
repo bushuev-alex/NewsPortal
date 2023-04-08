@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     "news",
     "accounts",
     "fpages",
-    "django_filters"
+    "django_filters",
+    "fullurl"
 ]
 
 SITE_ID = 1
@@ -58,6 +59,10 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware"
 ]
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+)
 
 ROOT_URLCONF = "NewsPaper.urls"
 

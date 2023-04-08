@@ -1,6 +1,7 @@
 from django import template
 import re
 from .bad_words import bad_words
+
 bad_words += [word.capitalize() for word in bad_words]
 
 register = template.Library()
@@ -17,9 +18,9 @@ def currency(value):
 
 @register.filter()
 def censor(sentence: str):
-    sentence_ = re.sub("[\"\',.!:;]", '', sentence)
-    words = sentence_.split(' ')
-    bad_exist = set(words).intersection(bad_words)
+    sentence_ = re.sub("[\"\',.!:;]", '', sentence)  # delete punctuation marks
+    words = sentence_.split(' ')  # split sentence by ' '
+    bad_exist = set(words).intersection(bad_words)  #
     for bad_word in bad_exist:
         replace_by = bad_word[0] + '*' * (len(bad_word) - 1)
         sentence = re.sub(bad_word, replace_by, sentence)
