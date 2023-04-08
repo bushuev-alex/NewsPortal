@@ -17,6 +17,7 @@ Post
                <!-- Добавляем ещё одну ячейку в строку и так далее -->
                <!--<td>category</td>-->
                <td>ID</td>
+               <td>TYPE</td>
                <td>AUTHOR</td>
                <td>DATE</td>
                <td>TITLE</td>
@@ -37,6 +38,7 @@ Post
                 в следующем столбце описание, и т.д.  -->
                <!--<td>{{ s_news.category.name }}</td>-->
                <td>{{ one_news.id }}</td>
+               <td>{{ one_news.type }}</td>
                <td>{{ one_news.author.user }}</td>
                <td>{{ one_news.date_time|date:'d M Y' }}</td>
                <td>{{ one_news.title|censor }}</td>

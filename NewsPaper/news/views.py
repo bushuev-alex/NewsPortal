@@ -116,11 +116,23 @@ class NewsDelete(DeleteView):
     template_name = "news_delete.html"
     success_url = reverse_lazy('post_list')
 
+    def form_valid(self, form):
+        obj = self.get_object()
+        if obj.type == "POST":
+            raise Http404
+        return super().form_valid(form)
+
 
 class ArticleDelete(DeleteView):
     model = Post
     template_name = "news_delete.html"
     success_url = reverse_lazy('post_list')
+
+    def form_valid(self, form):
+        obj = self.get_object()
+        if obj.type == "NEWS":
+            raise Http404
+        return super().form_valid(form)
 
 
 # Details
@@ -135,8 +147,6 @@ class NewsDetail(DetailView):
     model = Post
     template_name = 'news_by_id.html'
     context_object_name = 'news'
-
-    def delete(self):
 
 
 class ArticlesDetail(DetailView):
