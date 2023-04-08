@@ -91,7 +91,7 @@ class NewsUpdate(UpdateView):
     def form_valid(self, form):
         post = form.save(commit=True)
         if post.type == "POST":
-            raise Http404
+            raise Http404("You try to update 'POST' but this one is 'NEWS'")
         post.type = "NEWS"
         return super().form_valid(form)
 
@@ -104,7 +104,7 @@ class ArticleUpdate(UpdateView):
     def form_valid(self, form):
         post = form.save(commit=True)
         if post.type == "NEWS":
-            raise Http404
+            raise Http404("You try to update 'NEWS' but this one is 'POST'")
         post.type = "POST"
         return super().form_valid(form)
 
@@ -119,7 +119,7 @@ class NewsDelete(DeleteView):
     def form_valid(self, form):
         obj = self.get_object()
         if obj.type == "POST":
-            raise Http404
+            raise Http404("You try to delete 'POST' but this one is 'NEWS'")
         return super().form_valid(form)
 
 
@@ -131,7 +131,7 @@ class ArticleDelete(DeleteView):
     def form_valid(self, form):
         obj = self.get_object()
         if obj.type == "NEWS":
-            raise Http404
+            raise Http404("You try to delete 'NEWS' but this one is 'POST'")
         return super().form_valid(form)
 
 
