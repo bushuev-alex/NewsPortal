@@ -1,4 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post
 from .filters import PostFilter
 from datetime import datetime
@@ -59,7 +62,7 @@ class SearchNews(ListView):
         return context
 
 
-# Create
+# CREATE
 
 class NewsCreate(CreateView):
     form_class = PostForm
@@ -83,7 +86,9 @@ class ArticleCreate(CreateView):
         return super().form_valid(form)
 
 
-class NewsUpdate(UpdateView):
+# UPDATE
+
+class NewsUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = "news_edit.html"
@@ -96,7 +101,7 @@ class NewsUpdate(UpdateView):
         return super().form_valid(form)
 
 
-class ArticleUpdate(UpdateView):
+class ArticleUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = "news_edit.html"
@@ -109,8 +114,9 @@ class ArticleUpdate(UpdateView):
         return super().form_valid(form)
 
 
-# Delete
+# DELETE
 
+@method_decorator(login_required, name='dispatch')
 class NewsDelete(DeleteView):
     model = Post
     template_name = "news_delete.html"
@@ -123,6 +129,7 @@ class NewsDelete(DeleteView):
         return super().form_valid(form)
 
 
+@method_decorator(login_required, name='dispatch')
 class ArticleDelete(DeleteView):
     model = Post
     template_name = "news_delete.html"
@@ -135,7 +142,7 @@ class ArticleDelete(DeleteView):
         return super().form_valid(form)
 
 
-# Details
+# DETAILS
 
 class PostDetail(DetailView):
     model = Post

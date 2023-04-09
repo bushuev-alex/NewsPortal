@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-)t(!ai$s+tl4^jvfi+v@!4q716b#4_+u2(-c5)u46q=3d#)g=4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -44,7 +44,13 @@ INSTALLED_APPS = [
     "accounts",
     "fpages",
     "django_filters",
-    "fullurl"
+    "fullurl",
+    "sign",
+    "protect",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 SITE_ID = 1
@@ -60,11 +66,11 @@ MIDDLEWARE = [
     "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware"
 ]
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.request',
-)
 
 ROOT_URLCONF = "NewsPaper.urls"
+
+LOGIN_URL = "accounts/login/"
+LOGIN_REDIRECT_URL = "/"
 
 TEMPLATES = [
     {
@@ -114,6 +120,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
