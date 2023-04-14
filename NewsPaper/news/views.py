@@ -2,12 +2,15 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Post
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from .models import Post, Appointment
 from .filters import PostFilter
 from datetime import datetime
 from .forms import *
 from django.urls import reverse, reverse_lazy
 from django.http import Http404
+from django.views import View
+from django.shortcuts import render, reverse, redirect
 
 
 class PostList(ListView):
@@ -64,7 +67,8 @@ class SearchNews(ListView):
 
 # CREATE
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
     template_name = "news_edit.html"
@@ -75,7 +79,8 @@ class NewsCreate(CreateView):
         return super().form_valid(form)
 
 
-class ArticleCreate(CreateView):
+class ArticleCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
     template_name = "news_edit.html"
@@ -88,7 +93,8 @@ class ArticleCreate(CreateView):
 
 # UPDATE
 
-class NewsUpdate(LoginRequiredMixin, UpdateView):
+class NewsUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    permission_required = ('news.view_post', 'news.change_post')
     form_class = PostForm
     model = Post
     template_name = "news_edit.html"
@@ -101,7 +107,8 @@ class NewsUpdate(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class ArticleUpdate(LoginRequiredMixin, UpdateView):
+class ArticleUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    permission_required = ('news.view_post', 'news.change_post')
     form_class = PostForm
     model = Post
     template_name = "news_edit.html"
@@ -117,7 +124,8 @@ class ArticleUpdate(LoginRequiredMixin, UpdateView):
 # DELETE
 
 @method_decorator(login_required, name='dispatch')
-class NewsDelete(DeleteView):
+class NewsDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.view_post', 'news.delete_post')
     model = Post
     template_name = "news_delete.html"
     success_url = reverse_lazy('post_list')
@@ -130,7 +138,8 @@ class NewsDelete(DeleteView):
 
 
 @method_decorator(login_required, name='dispatch')
-class ArticleDelete(DeleteView):
+class ArticleDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.view_post', 'news.delete_post')
     model = Post
     template_name = "news_delete.html"
     success_url = reverse_lazy('post_list')
@@ -160,3 +169,18 @@ class ArticlesDetail(DetailView):
     model = Post
     template_name = 'news_by_id.html'
     context_object_name = 'news'
+
+
+class AppointmentView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'make_appointment.html', {})
+
+    def post(self, request, *args, **kwargs):
+        appointment = Appointment(
+            date=datetime.strptime(request.POST['date'], '%Y-%m-%d'),
+            client_name=request.POST['client_name'],
+            message=request.POST['message'],
+        )
+        appointment.save()
+
+        return redirect('appointments:make_appointment')
