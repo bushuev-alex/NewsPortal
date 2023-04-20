@@ -17,5 +17,16 @@ Post
 <hr>
 <h1>{{ news.text|censor }}</h1>
 <hr>
+<!--{% for category in news.category.all %}-->
+<!--<h3>-->
+<!--    {{ category.name }}-->
+<!--    {% if not is_subscribed %}-->
+<!--    <button> <a href="subscribe/">Подписаться</a> </button>-->
+<!--    {% else %}-->
+<!--    Вы подписаны на {{ category.name }}-->
+<!--    {% endif %}-->
+
+<!--</h3>-->
+<!--{% endfor %}-->
 
 {% endblock content %}

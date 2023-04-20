@@ -1,18 +1,24 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.template.loader import render_to_string
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from .models import Post, Appointment
-from .filters import PostFilter
-from datetime import datetime
-from .forms import *
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.urls import reverse, reverse_lazy
 from django.http import Http404
 from django.views import View
-from django.shortcuts import render, reverse, redirect
+from django.shortcuts import render, reverse, redirect, get_object_or_404
+from django.conf import settings
+
+from .models import Post, Category, PostCategory
+from .filters import PostFilter
+from .forms import *
+
+from datetime import datetime
 
 
+# LIST OF NEWS
 class PostList(ListView):
     model = Post  # Указываем модель, объекты которой мы будем выводить
     ordering = '-date_time'  # Поле, которое будет использоваться для сортировки объектов
@@ -31,6 +37,7 @@ class PostList(ListView):
         return context
 
 
+# SEARCH
 class SearchNews(ListView):
     model = Post  # Указываем модель, объекты которой мы будем выводить
     ordering = '-date_time'  # Поле, которое будет использоваться для сортировки объектов
@@ -66,7 +73,6 @@ class SearchNews(ListView):
 
 
 # CREATE
-
 class NewsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     permission_required = ('news.add_post',)
     form_class = PostForm
@@ -76,6 +82,24 @@ class NewsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=True)
         post.type = "NEWS"
+
+        # user = self.request.user
+        # recipient_list = []
+        #
+        # for user in User.objects.all():
+        #     if user.email:
+        #         recipient_list.append(user.email)
+        #
+        # message = f"Hello, {user}, new {post.type} appeared.\n" \
+        #           f"{post.title}\n" \
+        #           f"{post.text}"
+        #
+        # send_mail(subject=f'{post.title}',
+        #           message=message,  # сообщение с кратким описанием проблемы
+        #           from_email=f'{user.email}',
+        #           recipient_list=recipient_list
+        #           )
+
         return super().form_valid(form)
 
 
@@ -88,11 +112,28 @@ class ArticleCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=True)
         post.type = "POST"
+
+        # user = self.request.user
+        # recipient_list = []
+        #
+        # for user in User.objects.all():
+        #     if user.email:
+        #         recipient_list.append(user.email)
+        #
+        # message = f"Hello, {user}, new {post.type} appeared.\n" \
+        #           f"{post.title}\n" \
+        #           f"{post.text}"
+        #
+        # send_mail(subject=f'{post.title}',
+        #           message=message,  # сообщение с кратким описанием проблемы
+        #           from_email=f'{user.email}',
+        #           recipient_list=recipient_list
+        #           )
+
         return super().form_valid(form)
 
 
 # UPDATE
-
 class NewsUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     permission_required = ('news.view_post', 'news.change_post')
     form_class = PostForm
@@ -122,7 +163,6 @@ class ArticleUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
 
 
 # DELETE
-
 @method_decorator(login_required, name='dispatch')
 class NewsDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('news.view_post', 'news.delete_post')
@@ -152,7 +192,6 @@ class ArticleDelete(PermissionRequiredMixin, DeleteView):
 
 
 # DETAILS
-
 class PostDetail(DetailView):
     model = Post
     template_name = 'news_by_id.html'
@@ -171,16 +210,27 @@ class ArticlesDetail(DetailView):
     context_object_name = 'news'
 
 
-class AppointmentView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'make_appointment.html', {})
+class CategoryListView(PostList):
+    model = Post
+    template_name = 'news_by_cat.html'
+    context_object_name = 'news_by_cat'
 
-    def post(self, request, *args, **kwargs):
-        appointment = Appointment(
-            date=datetime.strptime(request.POST['date'], '%Y-%m-%d'),
-            client_name=request.POST['client_name'],
-            message=request.POST['message'],
-        )
-        appointment.save()
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(category=self.category)  # .group_by("-date_time")
+        return queryset
 
-        return redirect('appointments:make_appointment')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscribed'] = self.request.user not in self.category.subscribers.all()
+        context['category'] = self.category
+        return context
+
+
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+    message = "You successfully subscribed on news at category"
+    return render(request, 'subscribe.html', {'category': category, 'message': message})
