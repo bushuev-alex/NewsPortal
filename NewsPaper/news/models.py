@@ -37,6 +37,9 @@ class Category(models.Model):
     name = models.CharField(max_length=30, unique=True)
     subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Post(models.Model):
     post = 'POST'
