@@ -147,7 +147,7 @@ ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Novosibirsk"  # "UTC"
 
 USE_I18N = True
 

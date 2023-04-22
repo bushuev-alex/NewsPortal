@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.urls import reverse, reverse_lazy
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.views import View
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.conf import settings
@@ -14,6 +14,7 @@ from django.conf import settings
 from .models import Post, Category, PostCategory
 from .filters import PostFilter
 from .forms import *
+from .utils import too_many_posts, msg
 
 from datetime import datetime
 
@@ -83,24 +84,10 @@ class NewsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         post = form.save(commit=True)
         post.type = "NEWS"
 
-        # user = self.request.user
-        # recipient_list = []
-        #
-        # for user in User.objects.all():
-        #     if user.email:
-        #         recipient_list.append(user.email)
-        #
-        # message = f"Hello, {user}, new {post.type} appeared.\n" \
-        #           f"{post.title}\n" \
-        #           f"{post.text}"
-        #
-        # send_mail(subject=f'{post.title}',
-        #           message=message,  # сообщение с кратким описанием проблемы
-        #           from_email=f'{user.email}',
-        #           recipient_list=recipient_list
-        #           )
-
-        return super().form_valid(form)
+        if too_many_posts(model=self.model, post=post):
+            return HttpResponse(msg)
+        else:
+            return super().form_valid(form)
 
 
 class ArticleCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
@@ -113,24 +100,10 @@ class ArticleCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         post = form.save(commit=True)
         post.type = "POST"
 
-        # user = self.request.user
-        # recipient_list = []
-        #
-        # for user in User.objects.all():
-        #     if user.email:
-        #         recipient_list.append(user.email)
-        #
-        # message = f"Hello, {user}, new {post.type} appeared.\n" \
-        #           f"{post.title}\n" \
-        #           f"{post.text}"
-        #
-        # send_mail(subject=f'{post.title}',
-        #           message=message,  # сообщение с кратким описанием проблемы
-        #           from_email=f'{user.email}',
-        #           recipient_list=recipient_list
-        #           )
-
-        return super().form_valid(form)
+        if too_many_posts(model=self.model, post=post):
+            return HttpResponse(msg)
+        else:
+            return super().form_valid(form)
 
 
 # UPDATE
@@ -234,3 +207,5 @@ def subscribe(request, pk):
     category.subscribers.add(user)
     message = "You successfully subscribed on news at category"
     return render(request, 'subscribe.html', {'category': category, 'message': message})
+
+

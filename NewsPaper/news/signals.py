@@ -34,4 +34,4 @@ def notify_about_new_creation(sender, instance, **kwargs):
             recipient_list += [s.email for s in subscribers]
 
         send_notifications(instance.preview(), instance.pk, instance.title, recipient_list)
-        print(recipient_list)
+        # print(recipient_list)
