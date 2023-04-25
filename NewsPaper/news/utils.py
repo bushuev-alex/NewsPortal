@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 
 def too_many_posts(model, post) -> bool:
     posts = model.objects.filter(author=post.author).filter(date_time__gte=datetime.today().date())
-    if len(posts) > 3:
+    if len(posts) > 20:
         return True
     return False
 

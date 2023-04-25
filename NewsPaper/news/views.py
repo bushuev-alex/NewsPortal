@@ -15,6 +15,8 @@ from .models import Post, Category, PostCategory
 from .filters import PostFilter
 from .forms import *
 from .utils import too_many_posts, msg
+from .signals import notify_about_new_creation, printer2
+from .tasks import printer
 
 from datetime import datetime
 
@@ -32,6 +34,8 @@ class PostList(ListView):
         # и вызываем у них метод get_context_data с теми же аргументами,
         # что и были переданы нам.
         # В ответе мы должны получить словарь.
+        printer.delay()
+        printer2.delay()
         context = super().get_context_data(**kwargs)
         context['time_now'] = datetime.utcnow()
         context['next_news'] = None
@@ -87,6 +91,7 @@ class NewsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         if too_many_posts(model=self.model, post=post):
             return HttpResponse(msg)
         else:
+            notify_about_new_creation.delay(post.pk)
             return super().form_valid(form)
 
 
@@ -103,6 +108,7 @@ class ArticleCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         if too_many_posts(model=self.model, post=post):
             return HttpResponse(msg)
         else:
+            notify_about_new_creation.delay(post.pk)
             return super().form_valid(form)
 
 
