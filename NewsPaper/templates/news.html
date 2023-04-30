@@ -1,12 +1,16 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
+{% load cache %}
 
-
+<!--{% cache 600 title %}-->
 {% block title %}
 Post
 {% endblock title %}
+<!--{% endcache %}-->
 
+
+<!--{% cache 600 content %}-->
 {% block content %}
    <h1>All News for now at {% current_time %}</h1>
    {{ next_news|default_if_none:"Next news will be soon!" }}
@@ -80,3 +84,4 @@ Post
    {% endif %}
 
 {% endblock content %}
+<!--{% endcache %}-->

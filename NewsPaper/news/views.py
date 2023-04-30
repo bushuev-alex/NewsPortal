@@ -10,6 +10,8 @@ from django.http import Http404, HttpResponse
 from django.views import View
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.conf import settings
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 from .models import Post, Category, PostCategory
 from .filters import PostFilter
@@ -176,6 +178,13 @@ class PostDetail(DetailView):
     template_name = 'news_by_id.html'
     context_object_name = 'news'
 
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f"post-{self.kwargs['pk']}")
+        if not obj:
+            obj = super().get_object()
+            cache.set(f"post-{self.kwargs['pk']}", obj)
+        return obj
+
 
 class NewsDetail(DetailView):
     model = Post
@@ -213,5 +222,3 @@ def subscribe(request, pk):
     category.subscribers.add(user)
     message = "You successfully subscribed on news at category"
     return render(request, 'subscribe.html', {'category': category, 'message': message})
-
-

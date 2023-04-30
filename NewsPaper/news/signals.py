@@ -17,7 +17,7 @@ def printer2():
     print("Hello from signals!")
 
 
-def send_notifications(preview, pk, title, subscribers):
+def send_notifications(preview, pk, title, subscribers) -> bool:
     html_content = render_to_string("post_created_email.html",
                                     {
                                         "text": preview,
@@ -31,10 +31,11 @@ def send_notifications(preview, pk, title, subscribers):
 
     msg.attach_alternative(html_content, "text/html")
     msg.send()
+    return True
 
 
 @shared_task
-def notify_about_new_creation(pk: int, **kwargs):
+def notify_about_new_creation(pk: int, **kwargs) -> bool:
     post = Post.objects.get(id=pk)
     categories = post.category.all()
     recipient_list = []
@@ -48,7 +49,7 @@ def notify_about_new_creation(pk: int, **kwargs):
 
 
 @shared_task
-def notify_about_posts_mon_8am():
+def notify_about_posts_mon_8am() -> bool:
     today = datetime.now()
     last_week = today - timedelta(days=7)
     posts = Post.objects.filter(date_time__gte=last_week)
