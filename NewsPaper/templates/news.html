@@ -1,6 +1,7 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
+{% load i18n %}
 
 
 {% block title %}
@@ -8,7 +9,7 @@ Post
 {% endblock title %}
 
 {% block content %}
-   <h1>All News for now at {% current_time %}</h1>
+   <h1>{% trans "All" %} {% trans "News" %} {% trans "for" %} {% trans "now" %} {% trans "at" %} {% current_time %}</h1>
    {{ next_news|default_if_none:"Next news will be soon!" }}
    <hr>
    {% if news %}
@@ -16,14 +17,14 @@ Post
            <tr> <!-- Добавляем строку -->
                <!-- Добавляем ещё одну ячейку в строку и так далее -->
                <!--<td>category</td>-->
-               <td>ID</td>
-               <td>TYPE</td>
-               <td>AUTHOR</td>
-               <td>DATE</td>
-               <td>TITLE</td>
-               <td>TEXT</td>
-               <td>CATEGORY</td>
-               <td>RATING</td>
+               <td>{% trans "ID" %}</td>
+               <td>{% trans "TYPE" %}</td>
+               <td>{% trans "AUTHOR" %}</td>
+               <td>{% trans "DATE" %}</td>
+               <td>{% trans "TITLE" %}</td>
+               <td>{% trans "TEXT" %}</td>
+               <td>{% trans "CATEGORY" %}</td>
+               <td>{% trans "RATING" %}</td>
            </tr> <!-- Не забываем закрыть HTML-тег строки -->
 
            <!-- Для каждого товара будете генерироваться новая строчка,
@@ -53,7 +54,7 @@ Post
 
        </table> <!-- ... и таблицы -->
    {% else %}
-       <h2>Товаров нет!</h2>
+       <h2>{% trans "Products" %} {% trans "are" %} {% trans "not" %} {% trans "available" %}!</h2>
    {% endif %}
 
        {# Добавляем пагинацию на страницу #}

@@ -1,11 +1,13 @@
 {% extends "main.html" %}
+{% load i18n %}
 
 {% block content %}
-<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
-<div> Здесь может содержаться персональная информация для каждого пользователя </div>
+<h2>{% trans "Страница" %} {% trans "авторизованного" %} {% trans "пользователя" %} {{request.user.username}}</h2>
+<div>{% trans "Здесь" %} {% trans "может" %} {% trans "содержаться" %} {% trans "персональная" %}
+    {% trans "информация" %} {% trans "для" %} {% trans "каждого" %} {% trans "пользователя" %}</div>
 
-<button> <a href="sign/logout/">Выйти</a> </button>
+<button> <a href="sign/logout/">{% trans "Выйти" %}</a> </button>
 {% if is_not_author %}
-<button> <a href="sign/upgrade/">Стать автором.</a> </button>
+<button> <a href="sign/upgrade/">{% trans "Стать" %} {% trans "автором" %}.</a> </button>
 {% endif %}
 {% endblock %}

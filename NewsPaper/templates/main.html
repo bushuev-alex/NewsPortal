@@ -1,10 +1,29 @@
-<html>
+<!DOCTYPE html>
+    {% load i18n %}
+
+<html lang="en">
     <head>
-        <title> Simple SignUp/SignIn app</title>
+        <title>{% trans "Simple" %} {% trans "SignUp" %}/{% trans "SignIn" %} {% trans "app" %}</title>
     </head>
     <body>
+        <!-- Language change form -->
+        <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
+        <input type="hidden" name="next" value="{{ redirect_to }}">
+
+        <select name="language" id="">
+            {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+            {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+
+            {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+                <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                    {{ language.name_local }} - {{ language.code }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="set">
+        </form>
         <div>
-            <h1><a href="/">Simple SignUp/SignIn app</a></h1>
+            <h1><a href="/">{% trans "Simple" %} {% trans "SignUp" %}/{% trans "SignIn" %} {% trans "app" %}</a></h1>
         </div>
         {% block content %}
         {% endblock %}
