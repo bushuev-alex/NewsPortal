@@ -27,9 +27,6 @@ def censor(sentence: str):
     return sentence
 
 
-
-
-
 if __name__ == '__main__':
     import re
     sent = re.sub(f"my ({'|'.join(bad_words)})", "good_news", "This is bad_news.")

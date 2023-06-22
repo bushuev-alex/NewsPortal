@@ -5,13 +5,15 @@
 
 
 {% block title %}
-Post
+{% trans "Post" %}
 {% endblock title %}
 
 {% block content %}
-   <h1>{% trans "All" %} {% trans "News" %} {% trans "for" %} {% trans "now" %} {% trans "at" %} {% current_time %}</h1>
+   <h1>{% trans "All News for now at" %} ({% current_time %})</h1>
    {{ next_news|default_if_none:"Next news will be soon!" }}
-   <hr>
+    <hr>
+    {% block search_form %}
+    {% endblock search_form %}
    {% if news %}
        <table> <!-- Начинаем описывать таблицу -->
            <tr> <!-- Добавляем строку -->

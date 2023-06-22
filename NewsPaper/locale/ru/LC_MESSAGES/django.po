@@ -1,0 +1,352 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-22 10:06+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: fpages/admin.py:11
+msgid "Advanced options"
+msgstr "Дополнительные настройки"
+
+#: news/filters.py:13 news/filters.py:17
+msgid "date_time"
+msgstr "Дата и время"
+
+#: news/filters.py:13
+msgid "Start Date"
+msgstr "С"
+
+#: news/filters.py:17
+msgid "End Date"
+msgstr "По"
+
+#: news/forms.py:21
+msgid "Title and text should be different."
+msgstr "Название и текст должны отличаться"
+
+#: news/models.py:46
+msgid "POST"
+msgstr "Статья"
+
+#: news/models.py:47
+msgid "NEWS"
+msgstr "Новость"
+
+#: news/models.py:50
+#, fuzzy
+#| msgid "Стать"
+msgid "Статья"
+msgstr "Статья"
+
+#: news/models.py:51
+msgid "Новость"
+msgstr "News"
+
+#: news/utils.py:14
+msgid ""
+"You've posted 3 news today already. Today you are not allowed to post any. "
+"Wait for tomorrow."
+msgstr ""
+"Вы уже опубликовали 3 записи. Сегодня нет возможности публиковать больше. "
+"Подождите до завтра."
+
+#: news/views.py:70
+msgid "Next news will be soon!"
+msgstr "Следующий пост уже скоро!"
+
+#: news/views.py:120
+msgid "You try to update 'POST' but this one is 'NEWS'"
+msgstr ""
+"Вы пытаетесь обновить пост в категории 'Статья'. Но этот пост относится к "
+"категории 'Новость'"
+
+#: news/views.py:134
+msgid "You try to update 'NEWS' but this one is 'POST'"
+msgstr ""
+"Вы пытаетесь обновить пост в категории 'Новость'. Но этот пост относится к "
+"категории 'Статья'"
+
+#: news/views.py:150
+msgid "You try to delete 'POST' but this one is 'NEWS'"
+msgstr ""
+"Вы пытаетесь удалить пост в категории 'Статья'. Но этот пост относится к "
+"категории 'Новость'"
+
+#: news/views.py:164
+msgid "You try to delete 'NEWS' but this one is 'POST'"
+msgstr ""
+"Вы пытаетесь удалить пост в категории 'Новость'. Но этот пост относится к "
+"категории 'Статья'"
+
+#: news/views.py:209
+msgid "You successfully subscribed on news at category"
+msgstr "Вы успешно подписались на новости в категории"
+
+#: templates/account/base.html:24
+#: templates/account/email/email_confirmation_signup_message.html:27
+#: templates/flatpages/default.html:38
+msgid "set"
+msgstr ""
+
+#: templates/account/email/email_confirmation_signup_message.html:8
+msgid "Document"
+msgstr "Документ"
+
+#: templates/account/email/email_confirmation_signup_message.html:31
+msgid "Thank you for"
+msgstr "Спасибо вам за"
+
+#: templates/account/email/email_confirmation_signup_message.html:32
+msgid "Please"
+msgstr "Пожалуйста"
+
+#: templates/account/email/email_confirmation_signup_message.html:32
+msgid "follow"
+msgstr "перейдите"
+
+#: templates/account/email/email_confirmation_signup_message.html:32
+msgid "the"
+msgstr "по"
+
+#: templates/account/email/email_confirmation_signup_message.html:32
+msgid "link"
+msgstr "ссылке"
+
+#: templates/account/email/email_confirmation_signup_message.html:33
+msgid "to"
+msgstr "чтобы"
+
+#: templates/account/email/email_confirmation_signup_message.html:33
+msgid "activate"
+msgstr "активировать"
+
+#: templates/account/email/email_confirmation_signup_message.html:33
+msgid "your"
+msgstr "ваш"
+
+#: templates/account/email/email_confirmation_signup_message.html:33
+msgid "account"
+msgstr "аккаунт"
+
+#: templates/flatpages/default.html:53
+msgid "All"
+msgstr "Все"
+
+#: templates/flatpages/default.html:53
+msgid "Posts"
+msgstr "записи"
+
+#: templates/flatpages/default.html:59
+msgid "Search"
+msgstr "Поиск"
+
+#: templates/flatpages/default.html:62 templates/flatpages/default.html:65
+msgid "Create"
+msgstr "Создать"
+
+#: templates/flatpages/default.html:62
+msgid "Article"
+msgstr "Статью"
+
+#: templates/flatpages/default.html:65
+msgid "News"
+msgstr "Новость"
+
+#: templates/main.html:6 templates/main.html:26
+msgid "Simple"
+msgstr " "
+
+#: templates/main.html:6 templates/main.html:26
+msgid "SignUp"
+msgstr "Регистрация"
+
+#: templates/main.html:6 templates/main.html:26
+msgid "SignIn"
+msgstr "вход"
+
+#: templates/main.html:6 templates/main.html:26
+msgid "app"
+msgstr " "
+
+#: templates/news.html:8
+#, fuzzy
+#| msgid "Posts"
+msgid "Post"
+msgstr "записи"
+
+#: templates/news.html:12
+msgid "All News for now at"
+msgstr "Все новости на данный момент"
+
+#: templates/news.html:22
+msgid "ID"
+msgstr "Номер"
+
+#: templates/news.html:23
+msgid "TYPE"
+msgstr "Тип записи"
+
+#: templates/news.html:24
+msgid "AUTHOR"
+msgstr "Автор"
+
+#: templates/news.html:25
+msgid "DATE"
+msgstr "Дата"
+
+#: templates/news.html:26
+msgid "TITLE"
+msgstr "Название"
+
+#: templates/news.html:27
+msgid "TEXT"
+msgstr "Содержание"
+
+#: templates/news.html:28
+msgid "CATEGORY"
+msgstr "Категория"
+
+#: templates/news.html:29
+msgid "RATING"
+msgstr "Рейтинг"
+
+#: templates/news.html:59
+msgid "Products"
+msgstr "Продукты"
+
+#: templates/news.html:59
+msgid "are"
+msgstr " "
+
+#: templates/news.html:59
+msgid "not"
+msgstr "не"
+
+#: templates/news.html:59
+msgid "available"
+msgstr "доступны"
+
+#: templates/protect/index.html:5
+msgid "Страница"
+msgstr "Страница"
+
+#: templates/protect/index.html:5
+msgid "авторизованного"
+msgstr "авторизованного"
+
+#: templates/protect/index.html:5 templates/protect/index.html:7
+msgid "пользователя"
+msgstr "пользователя"
+
+#: templates/protect/index.html:6
+msgid "Здесь"
+msgstr "Здесь"
+
+#: templates/protect/index.html:6
+msgid "может"
+msgstr "может"
+
+#: templates/protect/index.html:6
+msgid "содержаться"
+msgstr "содержаться"
+
+#: templates/protect/index.html:6
+msgid "персональная"
+msgstr "персональная"
+
+#: templates/protect/index.html:7
+msgid "информация"
+msgstr "информация"
+
+#: templates/protect/index.html:7
+msgid "для"
+msgstr "для"
+
+#: templates/protect/index.html:7
+msgid "каждого"
+msgstr "каждого"
+
+#: templates/protect/index.html:9
+msgid "Выйти"
+msgstr "Выйти"
+
+#: templates/protect/index.html:11
+msgid "Стать"
+msgstr "Стать"
+
+#: templates/protect/index.html:11
+msgid "автором"
+msgstr "автором"
+
+#: templates/search.html:16
+msgid "Найти"
+msgstr ""
+
+#: templates/sign/login.html:5 templates/sign/login.html:19
+msgid "Войти"
+msgstr ""
+
+#: templates/sign/login.html:5
+msgid "в"
+msgstr ""
+
+#: templates/sign/login.html:5
+msgid "систему"
+msgstr ""
+
+#: templates/sign/login.html:21 templates/sign/signup.html:5
+#, fuzzy
+#| msgid "информация"
+msgid "Регистрация"
+msgstr "информация"
+
+#: templates/sign/logout.html:5
+msgid "Вы"
+msgstr "Вы"
+
+#: templates/sign/logout.html:5
+msgid "вышли"
+msgstr "вышли"
+
+#: templates/sign/logout.html:5
+msgid "из"
+msgstr "из"
+
+#: templates/sign/logout.html:5
+msgid "системы"
+msgstr "системы"
+
+#: templates/sign/signup.html:9
+msgid "Продолжить"
+msgstr ""
+
+#~ msgid "for"
+#~ msgstr "на"
+
+#~ msgid "now"
+#~ msgstr "сейчас"
+
+#~ msgid "at"
+#~ msgstr "к"
+
+#~ msgid "Thank"
+#~ msgstr "Спасибо"
+
+#~ msgid "registering"
+#~ msgstr "регистрацию"

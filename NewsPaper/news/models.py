@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from datetime import datetime
+from django.utils.translation import gettext
 
 
 class Author(models.Model):
@@ -42,12 +43,12 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    post = 'POST'
-    news = 'NEWS'
+    post = gettext('POST')
+    news = gettext('NEWS')
 
     POST_TYPE = [
-        (post, 'Статья'),
-        (news, 'Новость')
+        (post, gettext('Статья')),
+        (news, gettext('Новость'))
     ]
 
     author = models.ForeignKey(Author, on_delete=models.CASCADE)

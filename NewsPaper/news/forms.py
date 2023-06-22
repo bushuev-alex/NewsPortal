@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Post
+from django.utils.translation import gettext
 
 
 class PostForm(forms.ModelForm):
@@ -17,6 +18,6 @@ class PostForm(forms.ModelForm):
         # type = cleaned_data.get("type")
 
         if title == text:
-            raise ValidationError("Title and text should be different.")
+            raise ValidationError(gettext("Title and text should be different."))
 
         return cleaned_data

@@ -2,6 +2,7 @@ from django.template.loader import render_to_string
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -63,16 +64,10 @@ class SearchNews(ListView):
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
-        # С помощью super() мы обращаемся к родительским классам
-        # и вызываем у них метод get_context_data с теми же аргументами,
-        # что и были переданы нам.
-        # В ответе мы должны получить словарь.
         context = super().get_context_data(**kwargs)
-        # К словарю добавим текущую дату в ключ 'time_now'.
         context['time_now'] = datetime.utcnow()
-        # Добавим ещё одну пустую переменную,
-        # чтобы на её примере рассмотреть работу ещё одного фильтра.
         context['next_news'] = None
+        # context['next_news_msg'] = gettext("Next news will be soon!")
         context['filterset'] = self.filterset
         return context
 
@@ -122,7 +117,7 @@ class NewsUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         post = form.save(commit=True)
         if post.type == "POST":
-            raise Http404("You try to update 'POST' but this one is 'NEWS'")
+            return HttpResponse(gettext("You try to update 'POST' but this one is 'NEWS'"))
         post.type = "NEWS"
         return super().form_valid(form)
 
@@ -136,7 +131,7 @@ class ArticleUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         post = form.save(commit=True)
         if post.type == "NEWS":
-            raise Http404("You try to update 'NEWS' but this one is 'POST'")
+            return HttpResponse(gettext("You try to update 'NEWS' but this one is 'POST'"))
         post.type = "POST"
         return super().form_valid(form)
 
@@ -152,7 +147,7 @@ class NewsDelete(PermissionRequiredMixin, DeleteView):
     def form_valid(self, form):
         obj = self.get_object()
         if obj.type == "POST":
-            raise Http404("You try to delete 'POST' but this one is 'NEWS'")
+            return HttpResponse(gettext("You try to delete 'POST' but this one is 'NEWS'"))
         return super().form_valid(form)
 
 
@@ -166,7 +161,7 @@ class ArticleDelete(PermissionRequiredMixin, DeleteView):
     def form_valid(self, form):
         obj = self.get_object()
         if obj.type == "NEWS":
-            raise Http404("You try to delete 'NEWS' but this one is 'POST'")
+            return HttpResponse(gettext("You try to delete 'NEWS' but this one is 'POST'"))
         return super().form_valid(form)
 
 
@@ -211,7 +206,7 @@ def subscribe(request, pk):
     user = request.user
     category = Category.objects.get(id=pk)
     category.subscribers.add(user)
-    message = "You successfully subscribed on news at category"
+    message = gettext("You successfully subscribed on news at category")
     return render(request, 'subscribe.html', {'category': category, 'message': message})
 
 

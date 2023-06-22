@@ -1,14 +1,36 @@
 <!DOCTYPE html>
+{% load i18n %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{% trans 'Document' %}</title>
 </head>
 <body>
+
+    <!-- Language change form -->
+    <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
+    <input type="hidden" name="next" value="{{ redirect_to }}">
+
+    <select name="language" id="">
+        {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+        {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+
+        {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                {{ language.name_local }} - {{ language.code }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="{% trans 'set' %}">
+    </form>
+
     {% load account %} <!-- Загружаем тег, который позволит получить нам ссылку на подтверждение -->
-    <h1>Thank you for registering {{ user.username }}!</h1>
-    <h3>Please follow <a href="{{ activate_url }}">the link</a> to activate your account</h3>
+    <h1>{% trans 'Thank you for'} {% trans 'registering' %} {{ user.username }}!</h1>
+    <h3>{% trans 'Please' %} {% trans 'follow' %} <a href="{{ activate_url }}">{% trans 'the' %} {% trans 'link' %}</a>
+        {% trans 'to' %} {% trans 'activate' %} {% trans 'your' %} {% trans 'account' %}</h3>
      <!-- Вставляем ссылку на активацию -->
 </body>
 </html>

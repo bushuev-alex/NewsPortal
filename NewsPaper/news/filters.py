@@ -1,5 +1,6 @@
 from django_filters import FilterSet, NumberFilter, CharFilter, DateTimeFilter, DateFilter
 from django.forms import DateInput
+from django.utils.translation import gettext
 from django_filters.widgets import RangeWidget
 from .models import Post
 
@@ -9,11 +10,11 @@ from .models import Post
 # должен чем-то напомнить знакомые вам Django дженерики.
 class PostFilter(FilterSet):
 
-    date_time__gt = DateFilter(field_name='date_time', lookup_expr='gt', label='Start Date',
+    date_time__gt = DateFilter(field_name=gettext('date_time'), lookup_expr='gt', label=gettext('Start Date'),
                                widget=DateInput(attrs={'type': 'date'}),
                                )
 
-    date_time__lt = DateFilter(field_name='date_time', lookup_expr='lt', label='End Date',
+    date_time__lt = DateFilter(field_name=gettext('date_time'), lookup_expr='lt', label=gettext('End Date'),
                                widget=DateInput(attrs={'type': 'date'}),
                                )
 

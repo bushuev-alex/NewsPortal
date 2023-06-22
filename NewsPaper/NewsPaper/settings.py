@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    "django_apscheduler"
+    "django_apscheduler",
+    'modeltranslation'
 ]
 
 SITE_ID = 1
@@ -140,7 +141,8 @@ ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+# LANGUAGE_CODE = "en-us"
+LANGUAGES = [('en-us', 'English'), ('ru', 'Русский')]
 
 TIME_ZONE = "Asia/Novosibirsk"  # "UTC"  #
 
