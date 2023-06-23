@@ -1,6 +1,9 @@
 from django import template
 import re
 from .bad_words import bad_words
+from django.utils import timezone
+from datetime import datetime
+import zoneinfo
 
 bad_words += [word.capitalize() for word in bad_words]
 
@@ -14,6 +17,11 @@ def currency(value):
     """
     # Возвращаемое функцией значение подставится в шаблон.
     return f'{value} Р'
+
+
+# @register.filter()
+# def current_hour(tz):
+#    return datetime.now(zoneinfo.ZoneInfo(tz)).hour
 
 
 @register.filter()

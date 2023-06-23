@@ -43,8 +43,8 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    post = gettext('POST')
-    news = gettext('NEWS')
+    post = 'POST'
+    news = 'NEWS'
 
     POST_TYPE = [
         (post, gettext('Статья')),
@@ -57,7 +57,7 @@ class Post(models.Model):
                             default=post)
     date_time = models.DateTimeField(auto_now_add=True)
     category = models.ManyToManyField(Category, through='PostCategory')
-    title = models.CharField(max_length=30)
+    title = models.TextField()
     text = models.TextField()
     rating = models.IntegerField(null=False, default=0)
 

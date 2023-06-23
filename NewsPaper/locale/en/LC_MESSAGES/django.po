@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 10:06+0700\n"
+"POT-Creation-Date: 2023-06-22 19:07+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,19 +38,9 @@ msgstr ""
 msgid "Title and text should be different."
 msgstr ""
 
-#: news/models.py:46
-msgid "POST"
-msgstr ""
-
-#: news/models.py:47
-msgid "NEWS"
-msgstr ""
-
 #: news/models.py:50
-#, fuzzy
-#| msgid "Стать"
 msgid "Статья"
-msgstr "Article"
+msgstr "Post"
 
 #: news/models.py:51
 msgid "Новость"
@@ -62,27 +52,23 @@ msgid ""
 "Wait for tomorrow."
 msgstr ""
 
-#: news/views.py:70
-msgid "Next news will be soon!"
-msgstr "Next news will be soon!"
-
-#: news/views.py:120
+#: news/views.py:121
 msgid "You try to update 'POST' but this one is 'NEWS'"
 msgstr ""
 
-#: news/views.py:134
+#: news/views.py:135
 msgid "You try to update 'NEWS' but this one is 'POST'"
 msgstr ""
 
-#: news/views.py:150
+#: news/views.py:151
 msgid "You try to delete 'POST' but this one is 'NEWS'"
 msgstr ""
 
-#: news/views.py:164
+#: news/views.py:165
 msgid "You try to delete 'NEWS' but this one is 'POST'"
 msgstr ""
 
-#: news/views.py:209
+#: news/views.py:210
 msgid "You successfully subscribed on news at category"
 msgstr ""
 
@@ -321,3 +307,6 @@ msgstr "the system"
 #: templates/sign/signup.html:9
 msgid "Продолжить"
 msgstr "Continue"
+
+#~ msgid "Next news will be soon!"
+#~ msgstr "Next news will be soon!"

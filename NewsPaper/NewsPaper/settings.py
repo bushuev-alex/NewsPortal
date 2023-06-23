@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    "modeltranslation",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -52,7 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     "django_apscheduler",
-    'modeltranslation'
+    "rest_framework"
 ]
 
 SITE_ID = 1
@@ -66,7 +67,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
-    'django.middleware.locale.LocaleMiddleware'
+    'django.middleware.locale.LocaleMiddleware',
+    'news.middlewares.TimezoneMiddleware'
     # "django.middleware.ThreadLocalUserMiddleware"
 ]
 
@@ -145,10 +147,11 @@ ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 LANGUAGES = [('en-us', 'English'), ('ru', 'Русский')]
 
 TIME_ZONE = "Asia/Novosibirsk"  # "UTC"  #
+USE_TZ = True
 
 USE_I18N = True
 
-USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

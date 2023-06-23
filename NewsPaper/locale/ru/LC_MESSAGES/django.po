@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 10:06+0700\n"
+"POT-Creation-Date: 2023-06-22 19:08+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,19 +40,9 @@ msgstr "По"
 msgid "Title and text should be different."
 msgstr "Название и текст должны отличаться"
 
-#: news/models.py:46
-msgid "POST"
-msgstr "Статья"
-
-#: news/models.py:47
-msgid "NEWS"
-msgstr "Новость"
-
 #: news/models.py:50
-#, fuzzy
-#| msgid "Стать"
 msgid "Статья"
-msgstr "Статья"
+msgstr "Post"
 
 #: news/models.py:51
 msgid "Новость"
@@ -66,35 +56,31 @@ msgstr ""
 "Вы уже опубликовали 3 записи. Сегодня нет возможности публиковать больше. "
 "Подождите до завтра."
 
-#: news/views.py:70
-msgid "Next news will be soon!"
-msgstr "Следующий пост уже скоро!"
-
-#: news/views.py:120
+#: news/views.py:121
 msgid "You try to update 'POST' but this one is 'NEWS'"
 msgstr ""
 "Вы пытаетесь обновить пост в категории 'Статья'. Но этот пост относится к "
 "категории 'Новость'"
 
-#: news/views.py:134
+#: news/views.py:135
 msgid "You try to update 'NEWS' but this one is 'POST'"
 msgstr ""
 "Вы пытаетесь обновить пост в категории 'Новость'. Но этот пост относится к "
 "категории 'Статья'"
 
-#: news/views.py:150
+#: news/views.py:151
 msgid "You try to delete 'POST' but this one is 'NEWS'"
 msgstr ""
 "Вы пытаетесь удалить пост в категории 'Статья'. Но этот пост относится к "
 "категории 'Новость'"
 
-#: news/views.py:164
+#: news/views.py:165
 msgid "You try to delete 'NEWS' but this one is 'POST'"
 msgstr ""
 "Вы пытаетесь удалить пост в категории 'Новость'. Но этот пост относится к "
 "категории 'Статья'"
 
-#: news/views.py:209
+#: news/views.py:210
 msgid "You successfully subscribed on news at category"
 msgstr "Вы успешно подписались на новости в категории"
 
@@ -335,6 +321,15 @@ msgstr "системы"
 #: templates/sign/signup.html:9
 msgid "Продолжить"
 msgstr ""
+
+#~ msgid "POST"
+#~ msgstr "Статья"
+
+#~ msgid "NEWS"
+#~ msgstr "Новость"
+
+#~ msgid "Next news will be soon!"
+#~ msgstr "Следующий пост уже скоро!"
 
 #~ msgid "for"
 #~ msgstr "на"

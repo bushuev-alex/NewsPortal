@@ -2,14 +2,14 @@
 {% load custom_filters %}
 {% load custom_tags %}
 {% load i18n %}
-
+{% load tz %}
 
 {% block title %}
 {% trans "Post" %}
 {% endblock title %}
 
 {% block content %}
-   <h1>{% trans "All News for now at" %} ({% current_time %})</h1>
+   <h1>{% trans "All News for now at" %} ({{ time_now|timezone:TIME_ZONE }})</h1>  <!-- {% current_time %} -->
    {{ next_news|default_if_none:"Next news will be soon!" }}
     <hr>
     {% block search_form %}
@@ -42,7 +42,7 @@
                <!--<td>{{ s_news.category.name }}</td>-->
                <td>{{ one_news.id }}</td>
                <td>{{ one_news.type }}</td>
-               <td>{{ one_news.author.user }}</td>
+               <td>{{ one_news.author.user.username }}</td>
                <td>{{ one_news.date_time|date:'d M Y' }}</td>
                <td>{{ one_news.title|censor }}</td>
                <td>{{ one_news.text|censor|truncatechars:20 }}</td>

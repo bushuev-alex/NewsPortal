@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext
+from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -12,14 +13,19 @@ from django.views import View
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.conf import settings
 
-from .models import Post, Category, PostCategory
-from .filters import PostFilter
-from .forms import *
-from .utils import too_many_posts, msg
-from .signals import notify_about_new_creation, printer2
-from .tasks import printer
-
 from datetime import datetime
+import pytz
+
+from rest_framework import viewsets
+from rest_framework import permissions
+
+from news.filters import PostFilter
+from news.forms import *
+from news.utils import too_many_posts, msg
+from news.signals import notify_about_new_creation, printer2
+from news.tasks import printer
+from news.serializers import *
+from news.models import *
 
 
 # LIST OF NEWS
@@ -31,16 +37,20 @@ class PostList(ListView):
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
-        # С помощью super() мы обращаемся к родительским классам
-        # и вызываем у них метод get_context_data с теми же аргументами,
-        # что и были переданы нам.
-        # В ответе мы должны получить словарь.
         printer.delay()
         printer2.delay()
         context = super().get_context_data(**kwargs)
-        context['time_now'] = datetime.utcnow()
+        context['time_now'] = timezone.now()
+        # context['hour_now'] = context['time_now'].hour
+        context['timezones'] = pytz.common_timezones
         context['next_news'] = None
         return context
+
+    def post(self, request, *args, **kwargs):
+        # context = self.get_contex_data(**kwargs)
+        # context['timezone'] = request.POST['timezone']
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('/posts/')
 
 
 # SEARCH
@@ -65,9 +75,10 @@ class SearchNews(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['time_now'] = datetime.utcnow()
+        context['time_now'] = timezone.now()
         context['next_news'] = None
         # context['next_news_msg'] = gettext("Next news will be soon!")
+        # context['models'] = self.model.objects.all()
         context['filterset'] = self.filterset
         return context
 
@@ -210,3 +221,21 @@ def subscribe(request, pk):
     return render(request, 'subscribe.html', {'category': category, 'message': message})
 
 
+class AuthorViewset(viewsets.ModelViewSet):
+   queryset = Author.objects.all()
+   serializer_class = AuthorSerializer
+
+
+class CategoryViewest(viewsets.ModelViewSet):
+   queryset = Category.objects.all()
+   serializer_class = CategorySerializer
+
+
+class PostViewset(viewsets.ModelViewSet):
+   queryset = Post.objects.all()
+   serializer_class = PostSerializer
+
+
+class CommentViewest(viewsets.ModelViewSet):
+   queryset = Comment.objects.all()
+   serializer_class = CommentSerializer

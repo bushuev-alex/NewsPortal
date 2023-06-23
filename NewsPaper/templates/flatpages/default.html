@@ -1,5 +1,8 @@
 <!DOCTYPE html>
+{% load custom_filters %}
+{% load custom_tags %}
 {% load i18n %}
+{% load tz %}
 
 <html lang="en">
     <head>
@@ -8,15 +11,21 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>
-                   {% block title %}
-                   {{ flatpage.title }}
-                   {% endblock title %}
+            {% block title %}
+            {{ flatpage.title }}
+            {% endblock title %}
         </title>
         <!-- Favicon-->
 
         <!-- Core theme CSS (includes Bootstrap)-->
         {% load static %}
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <style>
+            {% get_current_timezone as TIME_ZONE %}
+            {% current_hour TIME_ZONE as hour_in_this_tz %}
+            body {background-color: {% if hour_in_this_tz >= 19 or hour_in_this_tz <= 7 %} darkcyan {% else %} powderblue
+                                    {% endif %};}
+        </style>
     </head>
 
     <body>
@@ -37,6 +46,41 @@
 
         <input type="submit" value="{% trans 'set' %}">
         </form>
+
+
+        <!-- TIMEZONE change form -->
+<!--        {% get_current_timezone as TIME_ZONE %}-->
+        <form action="" method="POST"> {% csrf_token %}
+        <label for="timezone">
+            Time zone:
+        </label>
+
+        <select name="timezone">
+            {% for tz in timezones %}
+                <option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>
+                    {{ tz }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="{% trans 'set' %}">
+        </form>
+
+
+        {{ TIME_ZONE }}
+        <br>
+        {{ time_now }} <!-- Отображаем время в выбранном часовом поясе  -->
+        <br>
+<!--        {{ time_now|timezone:TIME_ZONE }}-->
+<!--        {{ time_now|timezone:TIME_ZONE }}-->
+<!--        <br>-->
+<!--        {% current_hour TIME_ZONE as hour_now %}-->
+<!--        {% if hour_now %}-->
+<!--            {{ TIME_ZONE }}-->
+<!--        {% endif %}-->
+<!--        {{ hour_now }}-->
+<!--        {{ current_time }}-->
+
+
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
            <div class="container">

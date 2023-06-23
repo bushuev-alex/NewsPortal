@@ -1,14 +1,19 @@
 from datetime import datetime
-
+from django.utils import timezone
 from django import template
-
+import zoneinfo
 
 register = template.Library()
 
 
 @register.simple_tag()
 def current_time(format_string='%H:%M of %d %b %Y'):
-   return datetime.utcnow().strftime(format_string)
+   return datetime.now().strftime(format_string)
+
+
+@register.simple_tag()
+def current_hour(tz):
+   return datetime.now(zoneinfo.ZoneInfo(tz)).hour
 
 
 @register.simple_tag(takes_context=True)
