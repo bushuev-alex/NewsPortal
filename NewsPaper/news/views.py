@@ -16,11 +16,13 @@ from django.conf import settings
 from datetime import datetime
 import pytz
 
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 
 from news.filters import PostFilter
-from news.forms import *
+from news.forms import PostForm
 from news.utils import too_many_posts, msg
 from news.signals import notify_about_new_creation, printer2
 from news.tasks import printer
@@ -149,7 +151,7 @@ class ArticleUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
 
 # DELETE
 @method_decorator(login_required, name='dispatch')
-class NewsDelete(PermissionRequiredMixin, DeleteView):
+class NewsDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     permission_required = ('news.view_post', 'news.delete_post')
     model = Post
     template_name = "news_delete.html"
@@ -221,21 +223,3 @@ def subscribe(request, pk):
     return render(request, 'subscribe.html', {'category': category, 'message': message})
 
 
-class AuthorViewset(viewsets.ModelViewSet):
-   queryset = Author.objects.all()
-   serializer_class = AuthorSerializer
-
-
-class CategoryViewest(viewsets.ModelViewSet):
-   queryset = Category.objects.all()
-   serializer_class = CategorySerializer
-
-
-class PostViewset(viewsets.ModelViewSet):
-   queryset = Post.objects.all()
-   serializer_class = PostSerializer
-
-
-class CommentViewest(viewsets.ModelViewSet):
-   queryset = Comment.objects.all()
-   serializer_class = CommentSerializer

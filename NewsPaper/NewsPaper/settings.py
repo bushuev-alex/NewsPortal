@@ -26,7 +26,7 @@ SECRET_KEY = KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     "django_apscheduler",
-    "rest_framework"
+    "rest_framework",
+    "api",
 ]
 
 SITE_ID = 1
@@ -74,7 +75,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "NewsPaper.urls"
 
-LOGIN_URL = "accounts/login/"
+LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/"
 
 TEMPLATES = [
@@ -272,3 +273,6 @@ USE_I18N = True
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
 ]
+
+
+# APPEND_SLASH = False

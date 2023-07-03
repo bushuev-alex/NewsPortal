@@ -17,6 +17,7 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path("admin/", admin.site.urls),
@@ -24,5 +25,10 @@ urlpatterns = [
     path('', include('protect.urls')),
     path('sign/', include('sign.urls')),
     path('accounts/', include('allauth.urls')),
-    path('swagger-ui/', TemplateView.as_view(template_name='swagger-ui.html', extra_context={'schema_url':'openapi-schema'}), name='swagger-ui'),
+
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('swagger-ui/', TemplateView.as_view(template_name='swagger-ui.html', extra_context={'schema_url':'openapi-schema.yml'}), name='swagger-ui'),
+    path('api/', include('api.urls')),
+
+
 ]

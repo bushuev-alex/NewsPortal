@@ -1,51 +1,261 @@
+openapi: 3.0.2
 info:
- title: 'Some application'
- version: '0.1'
+  title: 'NewsPortal OpenAPI Specification'
+  version: '0.0.1'
+servers:
+  - url: http://127.0.0.1:8000/api
+schemes:
+  - http
+tags:
+  - name: posts
+    description: all posts (news and articles)
+  - name: news
+    description: news
+  - name: articles
+    description: articles
 paths:
- /schools/:
-   get:
-     operationId: listSchools
-     description: 'List of schools'
-     parameters: []
-     responses:
-       '200':
-         content:
-           application/json:
-             schema:
-               type: array
-               items:
-                 $ref: '#/components/schemas/School'
-         description: ''
-     tags:
-     - schools
-   post:
-     operationId: createSchool
-     description: 'Create school'
-     parameters: []
-     requestBody:
-       content:
-         application/json:
-           schema:
-             $ref: '#/components/schemas/School'
-     responses:
-       '201':
-         content:
-           application/json:
-             schema:
-               $ref: '#/components/schemas/School'
-         description: ''
-     tags:
-     - schools
+  /posts:
+    get:
+      summary: Method to get list of all Posts and Articles
+      tags:
+        - posts
+      operationId: listPosts
+      description: List all Posts (articles and news)
+      responses:
+        '200':
+          description: Success answer with list of Posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posts'
+        'default':
+          description: All other events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /posts/{id}:
+    get:
+      summary: Method to get post by id
+      tags:
+        - posts
+      operationId: retrievePost
+      description: Get post by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this post
+        schema:
+          type: integer
+          example: 1
+      responses:
+        '200':
+          description: Success answer with one post by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+  /posts/news/create/:
+    post:
+      servers:
+        - url: http://127.0.0.1:8000
+          description: Override base path for all operations with the /posts/news/create/ path
+      summary: Method to create news
+      tags:
+        - news
+      operationId: createNews
+      description: Create news (type of post)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/News"
+      responses:
+        '200':
+          description: News have been successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+        'default':
+          description: All other events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /posts/news/{id}/update:
+    put:
+      tags:
+        - news
+      summary: Method to update existing news
+      operationId: updateNews
+      description: 'Update existing news'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this news.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Post'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: Successfull response
+  /posts/news/{id}/delete:
+    delete:
+      servers:
+        - url: http://127.0.0.1:8000
+          description: Override base path for all operations with the /posts/news/create/ path
+      tags:
+        - news
+      summary: Method to delete news
+      operationId: destroyNews
+      description: Delete news
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this news.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfull deletion
+          content:
+            application/json: {}
+        'default':
+          description: All other events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /posts/articles/{id}/update:
+    put:
+      tags:
+        - articles
+      summary: Method to update existing post
+      operationId: updatePost
+      description: 'Update existing post'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this post.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Post'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: Successfull response
+  /posts/articles/{id}/delete:
+    delete:
+      tags:
+        - articles
+      operationId: destroyPost
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this post.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
 
- schemas:
-   School:
-     type: object
-     properties:
-       id:
-         type: integer
-         readOnly: true
-       name:
-         type: string
-         maxLength: 64
-     required:
-     - name
+
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        author:
+          type: integer
+        type:
+          type: string
+          enum:
+            - POST
+            - NEWS
+        date_time:
+          type: string
+          example: "2023-04-15T16:26:45.835883+07:00"
+        category:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          example: 1
+        title:
+          type: string
+        text:
+          type: string
+        rating:
+          type: integer
+    Posts:
+      type: array
+      items:
+        $ref: "#/components/schemas/Post"
+    News:
+      type: object
+      properties:
+        author:
+          type: string
+          example: "1"
+        category:
+          type: string
+          enum:
+            - "1"
+            - "2"
+            - "3"
+            - "4"
+          example: "1"
+        title:
+          type: string
+        text:
+          type: string
+        rating:
+          type: string
+          example: "1"
+    Error:
+      type: object
+      required:
+        - code
+        - name
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
